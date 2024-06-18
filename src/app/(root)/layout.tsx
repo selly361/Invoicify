@@ -1,5 +1,5 @@
 import { League_Spartan } from 'next/font/google'
-import './globals.css'
+import '../globals.css'
 import { PropsWithChildren } from 'react'
 
 const leagueSpartan = League_Spartan({ subsets: ['latin'] })
