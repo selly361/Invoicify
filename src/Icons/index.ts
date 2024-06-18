@@ -1,4 +1,4 @@
-export { default as IconDarkWhite } from './icon-dark-and-white.svg'
+export { default as IconIllustration } from './icon-illustration-empty.svg'
 export { default as IconArrowDown } from './icon-arrow-down.svg'
 export { default as IconArrowRight } from './icon-arrow-right.svg'
 export { default as IconArrowLeft } from './icon-arrow-left.svg'
