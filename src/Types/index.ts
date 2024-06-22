@@ -1,3 +1,6 @@
+import { InvoiceSchema } from "@/Lib/Schemas"
+import { z } from "zod"
+
 interface Address {
 	street: string
 	city: string
@@ -12,15 +15,23 @@ interface Item {
 	total: number
 }
 
+interface PaymentTerms {
+	value: '1' | '7' | '14' | '30'
+	label: string
+}
+
 interface Invoice {
 	senderAddress: Address
 	clientName: string
 	clientEmail: string
 	clientAddress: Address
 	createdAt: Date
-	paymentTerms: '1' | '7' | '14' | '30'
+	paymentTerms: PaymentTerms
 	description: string
 	items: Item[]
 }
 
-export type { Address, Item, Invoice }
+type FormValues = z.infer<typeof InvoiceSchema>
+
+
+export type { Address, Item, Invoice, PaymentTerms, FormValues }
