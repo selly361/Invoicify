@@ -16,7 +16,10 @@ export const initialValues: Invoice = {
 		country: ''
 	},
 	createdAt: new Date(),
-	paymentTerms: '30',
+	paymentTerms: {
+		label: 'Next 30 Days',
+		value: '30'
+	},
 	description: '',
 	items: []
 }
