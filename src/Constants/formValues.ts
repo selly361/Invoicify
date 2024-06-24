@@ -1,6 +1,8 @@
 import { Invoice } from "@/Types";
+import { addDays } from "@/Utils";
 
 export const initialValues: Invoice = {
+	invoiceId: '',
 	senderAddress: {
 		street: '',
 		city: '',
@@ -15,7 +17,9 @@ export const initialValues: Invoice = {
 		postCode: '',
 		country: ''
 	},
+	status: 'pending',
 	createdAt: new Date(),
+	paymentDue: addDays(new Date(), 30),
 	paymentTerms: {
 		label: 'Next 30 Days',
 		value: '30'
