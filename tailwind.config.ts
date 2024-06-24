@@ -4,11 +4,14 @@ const config: Config = {
   darkMode: 'class',
 	content: [
 		'./src/pages/**/*.{js,ts,jsx,tsx,mdx}',
-		'./src/components/**/*.{js,ts,jsx,tsx,mdx}',
+		'./src/Components/**/*.{js,ts,jsx,tsx,mdx}',
 		'./src/app/**/*.{js,ts,jsx,tsx,mdx}'
 	],
 	theme: {
 		extend: {
+			boxShadow: {
+				'dropdown': 'var(--FilterShadow) 0px 10px 20px',
+			},
 			colors: {
 				bgMain: 'var(--bgMain)',
 				bgHeader: 'var(--bgHeader)',
@@ -28,7 +31,7 @@ const config: Config = {
 				bgSelectBorder: 'var(--bgSelectBorder)',
 				bgFilter: 'var(--bgFilter)',
 				bgFilterBox: 'var(--bgFilterBox)',
-				bgFilterShadow: 'var(--bgFilterShadow)',
+				FilterShadow: 'var(--FilterShadow)',
 				bgDeleteModal: 'var(--bgDeleteModal)',
 				textPrimary: 'var(--textPrimary)',
 				textSecondary: 'var(--textSecondary)',

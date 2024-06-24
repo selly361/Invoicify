@@ -2,9 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer {
+@layer components {
 	/* Light theme */
-
 	:root {
 		--bgMain: hsl(240, 27%, 98%);
 		--bgHeader: hsl(231, 20%, 27%);
@@ -24,7 +23,7 @@
 		--bgSelectBorder: hsl(231, 75%, 93%);
 		--bgFilter: hsl(0, 0%, 100%);
 		--bgFilterBox: hsl(231, 73%, 93%);
-		--bgFilterShadow: rgba(72, 84, 159, 25%);
+		--FilterShadow: rgba(72, 84, 159, 25%);
 		--bgDeleteModal: hsl(0, 0%, 100%);
 
 		/* Typography */
@@ -56,7 +55,6 @@
 	}
 
 	/* Dark theme */
-
 	.dark {
 		--bgMain: hsl(231, 30%, 11%);
 		--bgHeader: hsl(233, 31%, 17%);
@@ -76,7 +74,7 @@
 		--bgSelectBorder: hsl(233, 31%, 17%);
 		--bgFilter: hsl(233, 30%, 21%);
 		--bgFilterBox: hsl(233, 31%, 17%);
-		--bgFilterShadow: rgba(0, 0, 0, 25%);
+		--FilterShadow: rgba(0, 0, 0, 25%);
 		--bgDeleteModal: hsl(233, 31%, 17%);
 
 		/* Typography */
@@ -106,6 +104,56 @@
 		--btnTheme: hsl(232, 23%, 61%);
 		--btnThemeHover: hsl(231, 75%, 93%);
 	}
+
+	.invoice-input {
+		@apply w-full h-12 px-5 pt-[18px] pb-[15px] bg-bgInput border border-bgInputBorder 
+		text-heading-s text-textPrimary rounded outline-none focus:border-purple
+		transition-all duration-300 ease-in-out;
+	}
+
+	.small-fieldset-container {
+		@apply flex flex-col gap-2.5;
+	}
+
+	.medium-fieldset-container {
+		@apply flex flex-col gap-6;
+	}
+
+	.large-fieldset-container {
+		@apply flex flex-col gap-12;
+	}
+
+	.button {
+		@apply h-12 px-6 rounded-full z-10 grid place-items-center text-textSecondary transition-colors duration-300 text-heading-s;
+	}
+
+	.button-primary {
+		@apply button bg-btnPrimary hover:bg-btnPrimaryHover text-white;
+	}
+
+	.button-secondary {
+		@apply button bg-btnSecondary hover:bg-btnSecondaryHover text-textTertiary;
+	}
+
+	.button-tertiary {
+		@apply button bg-btnSave hover:bg-btnSaveHover text-textTertiary;
+	}
+
+	.dropdown-button {
+		@apply w-full h-12 p-4 bg-bgInput border border-bgInputBorder text-textPrimary rounded flex items-center text-heading-s-variant justify-between;
+	}
+
+	.dropdown-menu {
+		@apply absolute mt-1 w-full bg-bgInput border border-bgInputBorder rounded-lg shadow-dropdown;
+	}
+
+	.dropdown-option {
+		@apply cursor-pointer text-heading-s-variant border-b border-bgInputBorder text-textSecondary pl-6 py-4 flex items-center;
+	}
+
+	.dropdown-option:last-child {
+		@apply border-none;
+	}
 }
 
 /* Scrollbar styles */
@@ -113,16 +161,31 @@
 ::-webkit-scrollbar {
 	width: 10px;
 	height: 10%;
-	background: var(--bgMain);
+	background: var(--bgMain, #f0f0f0); /* Fallback color */
 }
 
 ::-webkit-scrollbar-track {
 	-webkit-border-radius: 10px;
 	border-radius: 10px;
+	background: var(--bgMain, #f0f0f0); /* Fallback color */
 }
 
 ::-webkit-scrollbar-thumb {
 	-webkit-border-radius: 10px;
 	border-radius: 5px;
-	background: var(--bgFormScroll);
+	background: var(--bgFormScroll, #c0c0c0); /* Fallback color */
 }
+
+/* Hides Spin Button */
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+	-webkit-appearance: none;
+	margin: 0; 
+}
+
+input[type='number'] {
+	-moz-appearance: textfield; 
+}
+
+
