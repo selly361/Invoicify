@@ -16,16 +16,21 @@ interface Item {
 }
 
 interface PaymentTerms {
-	value: '1' | '7' | '14' | '30'
+	value: string
 	label: string
 }
 
+type Status = 'paid' | 'pending' | 'draft'
+
 interface Invoice {
+	invoiceId: string
 	senderAddress: Address
 	clientName: string
 	clientEmail: string
 	clientAddress: Address
+	status: Status
 	createdAt: Date
+	paymentDue: Date
 	paymentTerms: PaymentTerms
 	description: string
 	items: Item[]
