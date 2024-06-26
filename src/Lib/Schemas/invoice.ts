@@ -15,6 +15,7 @@ const ItemSchema = z.object({
 })
 
 const InvoiceSchema = z.object({
+	_id: z.string().optional(),
 	invoiceId: z.string(),
 	senderAddress: AddressSchema,
 	clientName: z.string().trim().min(1, '- All fields must be filled.'),
