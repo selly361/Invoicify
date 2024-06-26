@@ -1,7 +1,7 @@
 import type { Config } from 'tailwindcss'
 
 const config: Config = {
-  darkMode: 'class',
+	darkMode: 'class',
 	content: [
 		'./src/pages/**/*.{js,ts,jsx,tsx,mdx}',
 		'./src/Components/**/*.{js,ts,jsx,tsx,mdx}',
@@ -10,7 +10,11 @@ const config: Config = {
 	theme: {
 		extend: {
 			boxShadow: {
-				'dropdown': 'var(--FilterShadow) 0px 10px 20px',
+				dropdown: 'var(--FilterShadow) 0px 10px 20px',
+				invoiceItem: 'var(--bgInvoiceItemShadow) 10px 0px 10px -10px'
+			},
+			gridTemplateColumns: {
+				'invoice-layout': 'repeat(5, 1fr) 0.1fr'
 			},
 			colors: {
 				bgMain: 'var(--bgMain)',
