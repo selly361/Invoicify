@@ -70,6 +70,11 @@ const InvoiceSchema = new Schema({
 		required: true,
 		default: Date.now
 	},
+	paymentDue: {
+		type: Date,
+		required: true,
+		default: Date.now
+	},
 	paymentTerms: {
 		value: {
 			type: String,
@@ -80,6 +85,10 @@ const InvoiceSchema = new Schema({
 			type: String,
 			required: true
 		}
+	},
+	status: {
+		type: String,
+		required: true
 	},
 	description: {
 		type: String,
