@@ -2,13 +2,12 @@
 
 import { User } from '@/Lib/Models'
 import { connectToDB } from '../mongoose'
-import { getServerSession } from 'next-auth'
-import { authOptions } from '@/app/api/auth/[...nextauth]/route'
+import { Invoice as InvoiceType } from '@/Types'
+import { handleDBErrors, getSessionUserId } from '@/Utils'
 
 export async function createUser(userId: string) {
 	try {
 		await connectToDB()
-
 		const existingUser = await User.findOne({ userId })
 
 		if (existingUser) {
@@ -17,49 +16,26 @@ export async function createUser(userId: string) {
 		}
 
 		const newUser = new User({ userId })
+    
 		await newUser.save()
 
 		console.log('User created successfully')
-
 		return newUser
-
 	} catch (error) {
-
-		console.error('Error creating user', error)
-
-		throw new Error('Could not create user')
-
+		handleDBErrors(error, 'Error creating user')
 	}
 }
 
 export async function fetchUserInvoices() {
-
 	try {
-
 		await connectToDB()
+		const userId = await getSessionUserId()
 
-        const session = await getServerSession(authOptions)
+		const user = await User.findOne({ userId }).populate('invoices')
+		if (!user) throw new Error('User not found')
 
-		if (!session?.user?.id) {
-			console.error('Session or user ID not found')
-			throw new Error('Not authenticated')
-		}
-
-		const user = await User.findOne({ userId: session.user.id }).populate(
-			'invoices'
-		)
-
-		if (!user) {
-			throw new Error('User not found')
-		}
-
-		const invoices = user.invoices
-		return invoices
-
-	} catch (error: any) {
-
-		console.error('Error fetching invoices:', error.message)
-		throw new Error('Could not fetch invoices')
-
+		return user.invoices as InvoiceType[]
+	} catch (error) {
+		handleDBErrors(error, 'Error fetching invoices')
 	}
 }
