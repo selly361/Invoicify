@@ -5,11 +5,11 @@ import { IconArrowDown } from '@/Icons'
 import { Invoice } from '@/Types'
 import { AnimatePresence, motion } from 'framer-motion'
 import { useState, useRef, useEffect } from 'react'
-import { useFormContext } from 'react-hook-form'
+import { useFormContext } from '@/Contexts'
 
 const PaymentTerms = () => {
 	const { setValue, getValues } = useFormContext()
-	const fieldValue = getValues('paymentTerms') as Invoice['paymentTerms']
+	const fieldValue = getValues('paymentTerms')
 	const [isOpen, setIsOpen] = useState(false)
 	const dropdownRef = useRef<HTMLDivElement>(null)
 
