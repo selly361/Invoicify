@@ -1,8 +1,8 @@
 import { IconArrowRight } from '@/Icons'
 import { Invoice } from '@/Types'
 import { formatDate, totalPriceOfItems } from '@/Utils'
-import { statusClasses } from '@/Constants'
 import Link from 'next/link'
+import { Status } from '..'
 
 interface Props {
 	invoiceData: Invoice
@@ -12,10 +12,6 @@ interface Props {
 const InvoiceItem = ({ invoiceData }: Props) => {
 	const { invoiceId, status } = invoiceData
 	
-	const capitalizedStatus = status.charAt(0).toUpperCase() + status.slice(1)
-
-	const classes = statusClasses[capitalizedStatus]
-
 	return (
 		<Link href={`/invoice/${invoiceId}`}>
 			<div className='w-full h-[72px] pl-8 pr-6 border border-transparent hover:border-purple transition-colors duration-300 ease-in-out  grid grid-cols-invoice-layout grid-rows-1 items-center justify-between bg-bgInvoiceItem rounded-lg shadow-invoiceItem'>
@@ -30,14 +26,7 @@ const InvoiceItem = ({ invoiceData }: Props) => {
 				<p className='text-heading-s text-textPrimary'>
 					£ {totalPriceOfItems(invoiceData.items)}
 				</p>
-				<div
-					className={`w-[104px] h-[40px] rounded-md ${classes.bg} flex items-center justify-center gap-2`}
-				>
-					<span className={`w-2 h-2 rounded-full ${classes.dot}`} />
-					<h3 className={`text-heading-s-variant ${classes.text}`}>
-						{capitalizedStatus}
-					</h3>
-				</div>
+				<Status status={status} />
 				<IconArrowRight />
 			</div>
 		</Link>
