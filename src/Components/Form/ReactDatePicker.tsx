@@ -1,20 +1,13 @@
 'use client'
 
-import { useFormContext, Controller } from 'react-hook-form'
+import { Controller } from 'react-hook-form'
 import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import CustomDatePickerInput from './CustomDatePickerInput'
-import { addDays } from '@/Utils'
-import { FormValues } from '@/Types'
+import { useFormContext } from '@/Contexts'
 
 const ReactDatePicker = () => {
-	const {
-		control,
-		setValue,
-		watch,
-	} = useFormContext<FormValues>()
-
-	const days = Number(watch('paymentTerms.value'))
+	const { control, setValue } = useFormContext()
 
 	return (
 		<fieldset className='small-fieldset-container'>
@@ -25,9 +18,9 @@ const ReactDatePicker = () => {
 				render={({ field }) => (
 					<DatePicker
 						selected={field.value}
-						onChange={(date) =>
-							setValue('paymentDue', addDays(date as Date, days))
-						}
+						onChange={(date) => {
+							if (date) setValue('paymentDue', date)
+						}}
 						minDate={new Date()}
 						customInput={<CustomDatePickerInput />}
 						dateFormat='dd MMM yyyy'
