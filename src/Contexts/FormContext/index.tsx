@@ -1,60 +1,77 @@
 'use client'
 
-import {
-	createContext,
-	useContext,
-	useState,
-	ReactNode
-} from 'react'
-
-import { useForm, FormProvider as RHFFormProvider, UseFormReturn } from 'react-hook-form'
+import { createContext, PropsWithChildren, useContext, useState, useEffect } from 'react'
+import { useForm, UseFormReturn } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { InvoiceSchema } from '@/Lib/Schemas'
-import { FormValues } from '@/Types'
+import { FormValues, Invoice } from '@/Types'
 import { initialValues } from '@/Constants'
 import { fetchInvoice } from '@/Lib/Actions'
 import { useParams } from 'next/navigation'
-import { useModalContext } from '../ModalContext'
+import { useModalContext } from '@/Contexts'
 
-interface FormContextType {
-	formMethods: UseFormReturn<FormValues>
-	handleEdit: () => Promise<void>
+interface FormContextType extends UseFormReturn<FormValues> {
+    handleEdit: () => Promise<void>
+    hasFieldError: (field: 'name' | 'quantity' | 'price' | 'total') => boolean
+    calculateTotals: () => void
 }
 
 const FormContext = createContext<FormContextType | undefined>(undefined)
 
 export const useFormContext = () => {
-	const context = useContext(FormContext)
-	if (!context) {
-		throw new Error('useFormContext must be used within a FormProvider')
-	}
-	return context
+    const context = useContext(FormContext)
+    if (!context) {
+        throw new Error('useFormContext must be used within a FormProvider')
+    }
+    return context
 }
 
-export const FormProvider = ({ children }: { children: ReactNode }) => {
-	const { invoiceId } = useParams()
-	const [defaultValues, setDefaultValues] = useState<FormValues>(initialValues)
+export const FormProvider = ({ children }: PropsWithChildren) => {
+    const { invoiceId } = useParams()
+    const [defaultValues, setDefaultValues] = useState<FormValues>(initialValues)
     const { openModal } = useModalContext()
 
-	const formMethods = useForm<FormValues>({
-		mode: 'onChange',
-		resolver: zodResolver(InvoiceSchema),
-		defaultValues
-	})
+    const formMethods = useForm<FormValues>({
+        mode: 'onSubmit',
+        resolver: zodResolver(InvoiceSchema),
+        defaultValues
+    })
 
+    const hasFieldError = (field: 'name' | 'quantity' | 'price' | 'total') => 
+        Array.isArray(formMethods.formState.errors.items) &&
+        formMethods.formState.errors.items.some(item => item && item[field])
 
+    const calculateTotals = () => {
+        const items = formMethods.getValues('items')
+        items.forEach((item, index) => {
+            const total = item.quantity * item.price
+            formMethods.setValue(`items.${index}.total`, total, { shouldValidate: true })
+        })
+    }
 
-	const handleEdit = async () => {
-		const invoice = await fetchInvoice(invoiceId as string)
+    useEffect(() => {
+        calculateTotals()
+    }, [JSON.stringify(formMethods.watch('items'))])
 
-        setDefaultValues(invoice)
-        formMethods.reset(invoice)
+    const handleEdit = async () => {
+        const invoice = await fetchInvoice(invoiceId as string)
+
+        const data: Invoice = {
+            ...invoice,
+            _id: invoice._id,
+            createdAt: new Date(invoice.createdAt),
+            paymentDue: new Date(invoice.paymentDue)
+        }
+
+        formMethods.reset(data)
+        setDefaultValues(data)
+
         openModal('editInvoice')
-	}
+    }
 
-	return (
-		<FormContext.Provider value={{ formMethods, handleEdit }}>
-			<RHFFormProvider {...formMethods}>{children}</RHFFormProvider>
-		</FormContext.Provider>
-	)
+    return (
+        <FormContext.Provider value={{ ...formMethods, handleEdit, hasFieldError, calculateTotals }}>
+            {children}
+        </FormContext.Provider>
+    )
 }
