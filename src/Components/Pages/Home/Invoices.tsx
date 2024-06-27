@@ -1,4 +1,4 @@
-import InvoiceItem from '../InvoiceItem'
+import InvoiceItem from './InvoiceItem'
 import { Invoice } from '@/Types'
 
 interface Props {

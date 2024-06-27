@@ -2,7 +2,7 @@ import { IconArrowRight } from '@/Icons'
 import { Invoice } from '@/Types'
 import { formatDate, totalPriceOfItems } from '@/Utils'
 import Link from 'next/link'
-import { Status } from '../../..'
+import { Status } from '../..'
 
 interface Props {
 	invoiceData: Invoice
