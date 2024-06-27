@@ -18,7 +18,7 @@ export default function RootLayout({ children }: Readonly<PropsWithChildren>) {
 							<Header />
 							<Overlay />
 							<HandleModals />
-							{children}
+							<main className='w-[730px] min-h-24 bg-bgMain flex flex-col gap-16'>{children}</main>
 						</body>
 					</html>
 				</FormProvider>
