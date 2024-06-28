@@ -1,14 +1,31 @@
-import { statusClasses } from '@/Constants'
 import { Status as TStatus } from '@/Types'
 
 interface Prop {
     status: TStatus
 }
 
+const statusClasses = {
+	'paid': {
+		bg: 'bg-statusPaidBg',
+		dot: 'bg-statusPaid',
+		text: 'text-statusPaid'
+	},
+	'pending': {
+		bg: 'bg-statusPendingBg',
+		dot: 'bg-statusPending',
+		text: 'text-statusPending'
+	},
+	'draft': {
+		bg: 'bg-statusDraftBg',
+		dot: 'bg-statusDraft',
+		text: 'text-statusDraft'
+	}
+}
+
 function Status({ status }: Prop) {
 	const capitalizedStatus = status.charAt(0).toUpperCase() + status.slice(1)
 
-	const classes = statusClasses[capitalizedStatus]
+	const classes = statusClasses[status]
 
 	return (
 		<div
