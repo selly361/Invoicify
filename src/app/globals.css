@@ -139,6 +139,10 @@
 		@apply button bg-btnSave hover:bg-btnSaveHover text-textTertiary;
 	}
 
+	.button-danger {
+		@apply button bg-btnDelete hover:bg-btnDeleteHover text-white;
+	}
+
 	.dropdown-button {
 		@apply w-full h-12 p-4 bg-bgInput border border-bgInputBorder text-textPrimary rounded flex items-center text-heading-s-variant justify-between;
 	}
