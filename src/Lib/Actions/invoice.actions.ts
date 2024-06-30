@@ -1,14 +1,19 @@
 'use server'
 
-import type { Invoice as InvoiceData } from '@/Types'
+import type { Invoice as InvoiceType } from '@/Types'
 import { connectToDB } from '../mongoose'
 import { User, Invoice } from '@/Lib/Models'
-import { addDays, generateCustomId, getSessionUserId, handleDBErrors } from '@/Utils'
-import { ObjectId } from 'mongoose'
+import {
+	addDays,
+	generateCustomId,
+	getSessionUserId,
+	handleDBErrors
+} from '@/Utils'
 import { revalidatePath } from 'next/cache'
 import { InvoiceSchema } from '../Schemas'
+import { redirect } from 'next/navigation'
 
-async function createInvoice(invoiceData: InvoiceData) {
+async function createInvoice(invoiceData: InvoiceType) {
 	try {
 		await connectToDB()
 		const userId = await getSessionUserId()
@@ -37,17 +42,48 @@ async function createInvoice(invoiceData: InvoiceData) {
 	}
 }
 
-async function updateInvoice(newInvoice: InvoiceData) {
+async function createInvoiceDraft(invoiceData: InvoiceType) {
+	try {
+		await connectToDB()
+		const userId = await getSessionUserId()
+
+		const invoice = new Invoice({
+			...invoiceData,
+			status: 'draft',
+			paymentDue: addDays(
+				invoiceData.paymentDue,
+				Number(invoiceData.paymentTerms.value)
+			),
+			invoiceId: generateCustomId()
+		})
+
+		await invoice.save()
+
+		await User.findOneAndUpdate(
+			{ userId },
+			{ $addToSet: { invoices: invoice._id } },
+			{ upsert: true }
+		)
+		revalidatePath('/')
+	} catch (error) {
+		handleDBErrors(error, 'Error creating invoice draft')
+	}
+}
+
+async function updateInvoice(newInvoice: InvoiceType) {
 	try {
 		if (!newInvoice._id) throw new Error('Invoice _id is required')
 
+		const response = InvoiceSchema.safeParse(newInvoice)
+		if (!response.success || newInvoice.status === 'paid') throw new Error('Invalid invoice data')
+
 		const updatedInvoice = await Invoice.findByIdAndUpdate(
 			newInvoice._id,
-			newInvoice,
+			{...newInvoice, status: 'pending'},
 			{ new: true }
 		)
 		if (!updatedInvoice) throw new Error('Invoice not found')
-		
+
 		revalidatePath('/')
 		revalidatePath(`/invoices/${newInvoice.invoiceId}`)
 	} catch (error) {
@@ -55,11 +91,14 @@ async function updateInvoice(newInvoice: InvoiceData) {
 	}
 }
 
-async function deleteInvoice(invoiceObjectId: ObjectId) {
+async function deleteInvoice(invoiceObjectId: string) {
 	try {
 		await connectToDB()
 
-		const deletedInvoice = await Invoice.findByIdAndDelete(invoiceObjectId)
+		const deletedInvoice = await Invoice.findOneAndDelete({
+			id: invoiceObjectId
+		})
+
 		if (!deletedInvoice) throw new Error('Invoice not found')
 
 		await User.updateMany(
@@ -67,8 +106,7 @@ async function deleteInvoice(invoiceObjectId: ObjectId) {
 			{ $pull: { invoices: invoiceObjectId } }
 		)
 
-		revalidatePath('/')
-		return deletedInvoice
+		revalidatePath('/', 'page')
 	} catch (error) {
 		handleDBErrors(error, 'Error deleting invoice')
 	}
@@ -85,10 +123,14 @@ async function fetchInvoice(invoiceId: string) {
 		})
 		if (!user) throw new Error('User not found')
 
-		const invoice = user.invoices.find(
-			(invoice: InvoiceData) => invoice.invoiceId === invoiceId
+		const invoice: InvoiceType | undefined = user.invoices.find(
+			(invoice: InvoiceType) => invoice.invoiceId === invoiceId
 		)
-		if (!invoice) throw new Error('Invoice not found')
+
+		if (!invoice) {
+			console.error('Invoice not found')
+			return
+		}
 
 		return JSON.parse(JSON.stringify(invoice))
 	} catch (error) {
@@ -96,4 +138,39 @@ async function fetchInvoice(invoiceId: string) {
 	}
 }
 
-export { createInvoice, fetchInvoice, updateInvoice, deleteInvoice }
+async function markInvoicePaid(invoiceObjectId: string) {
+	try {
+		if (!invoiceObjectId) console.error('Invoice _id is required')
+
+		const invoice = await Invoice.findById(invoiceObjectId)
+
+		if (invoice.status === 'draft' || invoice.status === 'paid') {
+			console.error("Can't change status to paid")
+			return
+		}
+
+		const updatedInvoice = await Invoice.findByIdAndUpdate(
+			invoiceObjectId,
+			{
+				status: 'paid'
+			},
+			{ new: true }
+		)
+
+		if (!updatedInvoice) throw new Error('Invoice not found')
+
+		revalidatePath('/')
+		revalidatePath(`/invoices/${updatedInvoice.invoiceId}`)
+	} catch (error) {
+		handleDBErrors(error, 'Error marking invoice as paid')
+	}
+}
+
+export {
+	createInvoice,
+	fetchInvoice,
+	updateInvoice,
+	deleteInvoice,
+	markInvoicePaid,
+	createInvoiceDraft
+}
