@@ -33,15 +33,15 @@ export const deleteModalAnimation = {
 
 export const LoginModalAnimation = {
 	hidden: {
-		y: '-100vw'
+		y: '100vw'
 	},
 	visible: {
 		y: 0,
-		transition: { type: 'spring', duration: 1, bounce: 0.05 }
+		transition: { type: 'spring', duration: .5, bounce: 0.05 }
 	},
 	exit: {
-		y: '-100vw',
-		transition: { duration: 1 }
+		y: '100vw',
+		transition: { duration: .5 }
 	}
 } satisfies Variants
 
