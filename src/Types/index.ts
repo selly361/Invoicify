@@ -40,4 +40,4 @@ interface Invoice  {
 
 type FormValues = z.infer<typeof InvoiceSchema>
 
-export type { Address, Item, Invoice, PaymentTerms, FormValues }
+export type { Address, Item, Invoice, PaymentTerms, FormValues, Status }
