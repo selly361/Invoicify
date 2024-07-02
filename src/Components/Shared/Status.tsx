@@ -29,7 +29,7 @@ function Status({ status }: Prop) {
 
 	return (
 		<div
-			className={`w-[104px] h-[40px] rounded-md ${classes.bg} flex items-center justify-center gap-2`}
+			className={`w-[104px] h-[40px] transition-colors duration-500 ease-in-out rounded-md ${classes.bg} flex items-center justify-center gap-2`}
 		>
 			<span className={`w-2 h-2 rounded-full ${classes.dot}`} />
 			<h3 className={`text-heading-s-variant ${classes.text}`}>
