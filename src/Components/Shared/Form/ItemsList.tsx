@@ -49,7 +49,7 @@ function ItemsList() {
                         cn='w-[92px]'
                     />
                     <h4 className='text-heading-s-variant h-12 text-textPrimary flex items-center w-[68px]'>
-                        {items[index].total}
+                        {items[index]?.total}
                     </h4>
                     <button
                         type='button'
