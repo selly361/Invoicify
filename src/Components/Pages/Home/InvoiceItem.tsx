@@ -24,7 +24,7 @@ const InvoiceItem = ({ invoiceData }: Props) => {
 				</p>
 				<p className='text-textPrimary text-body'>{invoiceData.clientName}</p>
 				<p className='text-heading-s text-textPrimary'>
-					£ {totalPriceOfItems(invoiceData.items)}
+					£ {totalPriceOfItems(invoiceData.items).toFixed(2)}
 				</p>
 				<Status status={status} />
 				<IconArrowRight />
