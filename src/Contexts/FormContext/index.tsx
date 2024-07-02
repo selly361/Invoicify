@@ -6,14 +6,17 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { InvoiceSchema } from '@/Lib/Schemas'
 import { FormValues, Invoice } from '@/Types'
 import { initialValues } from '@/Constants'
-import { fetchInvoice } from '@/Lib/Actions'
-import { useParams } from 'next/navigation'
+import { createInvoiceDraft, deleteInvoice, fetchInvoice, markInvoicePaid } from '@/Lib/Actions'
+import { useParams, useRouter } from 'next/navigation'
 import { useModalContext } from '@/Contexts'
 
 interface FormContextType extends UseFormReturn<FormValues> {
+    handleDelete: () => Promise<void>
     handleEdit: () => Promise<void>
+    handleMarkAsPaid: () => Promise<void>
     hasFieldError: (field: 'name' | 'quantity' | 'price' | 'total') => boolean
     calculateTotals: () => void
+    invoiceId: string | string[]
 }
 
 const FormContext = createContext<FormContextType | undefined>(undefined)
@@ -28,8 +31,9 @@ export const useFormContext = () => {
 
 export const FormProvider = ({ children }: PropsWithChildren) => {
     const { invoiceId } = useParams()
+    const router = useRouter()
     const [defaultValues, setDefaultValues] = useState<FormValues>(initialValues)
-    const { openModal } = useModalContext()
+    const { openModal, closeModal } = useModalContext()
 
     const formMethods = useForm<FormValues>({
         mode: 'onSubmit',
@@ -56,6 +60,8 @@ export const FormProvider = ({ children }: PropsWithChildren) => {
     const handleEdit = async () => {
         const invoice = await fetchInvoice(invoiceId as string)
 
+        if(!invoice) return
+
         const data: Invoice = {
             ...invoice,
             _id: invoice._id,
@@ -69,8 +75,28 @@ export const FormProvider = ({ children }: PropsWithChildren) => {
         openModal('editInvoice')
     }
 
+    const handleDelete = async () => {
+        const invoice = await fetchInvoice(invoiceId as string)
+
+        if(!invoice) return
+
+        await deleteInvoice(invoice._id as string)
+        closeModal()
+        router.push('/')
+    }
+
+
+
+    const handleMarkAsPaid = async () => {
+        const invoice = await fetchInvoice(invoiceId as string)
+
+        await markInvoicePaid(invoice._id as string)
+    }
+
+    
+
     return (
-        <FormContext.Provider value={{ ...formMethods, handleEdit, hasFieldError, calculateTotals }}>
+        <FormContext.Provider value={{ ...formMethods, invoiceId, handleEdit, handleMarkAsPaid, hasFieldError, calculateTotals, handleDelete }}>
             {children}
         </FormContext.Provider>
     )
