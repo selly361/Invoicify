@@ -32,10 +32,13 @@ export async function fetchUserInvoices() {
 		const userId = await getSessionUserId()
 
 		const user = await User.findOne({ userId }).populate('invoices')
-		if (!user) throw new Error('User not found')
+		if (!user) {
+			console.error('User not found')
+			return []
+		}
 
 		return user.invoices as InvoiceType[]
 	} catch (error) {
-		handleDBErrors(error, 'Error fetching invoices')
+		console.error('Error fetching invoices', error)
 	}
 }
