@@ -1,7 +1,7 @@
 import ShortUniqueId from 'short-unique-id'
 import { Item } from '@/Types'
 import { getServerSession } from 'next-auth'
-import { authOptions } from '@/app/api/auth/[...nextauth]/route'
+import { authOptions } from '@/Constants'
 
 export const addDays = (date: Date, days: number) => {
 	const result = new Date(date)
