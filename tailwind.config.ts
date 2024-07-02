@@ -36,7 +36,7 @@ const config: Config = {
 				bgFilter: 'var(--bgFilter)',
 				bgFilterBox: 'var(--bgFilterBox)',
 				FilterShadow: 'var(--FilterShadow)',
-				bgDeleteModal: 'var(--bgDeleteModal)',
+				bgModal: 'var(--bgModal)',
 				textPrimary: 'var(--textPrimary)',
 				textSecondary: 'var(--textSecondary)',
 				textTertiary: 'var(--textTertiary)',
@@ -68,8 +68,11 @@ const config: Config = {
 				redLight: 'hsl(0, 100%, 80%)',
 				blueGrayish: 'hsl(231, 36%, 63%)',
 				grayLight: 'hsl(231, 20%, 36%)',
-				grayMedium: 'hsl(225, 14%, 53%)'
+				grayMedium: 'hsl(225, 14%, 53%)',
+				bgInvoiceTable: '#252945',
+				textGrayMedium: '#7E88C3',
 			},
+			
 			fontFamily: {
 				'league-spartan': ['League Spartan', 'sans-serif']
 			},
