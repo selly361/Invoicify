@@ -165,6 +165,8 @@ async function markInvoicePaid(invoiceObjectId: string) {
 	}
 }
 
+export const dynamic = "force-dynamic"
+
 export {
 	createInvoice,
 	fetchInvoice,

@@ -42,3 +42,5 @@ export async function fetchUserInvoices() {
 		console.error('Error fetching invoices', error)
 	}
 }
+
+export const dynamic = "force-dynamic"
