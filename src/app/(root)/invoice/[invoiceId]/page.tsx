@@ -2,6 +2,7 @@ import { InvoiceButtonsHeader, InvoiceInfo } from "@/Components"
 import { IconArrowLeft } from "@/Icons"
 import { fetchInvoice } from "@/Lib/Actions"
 import Link from "next/link"
+import { redirect } from "next/navigation"
 
 interface Props {
     params: {
@@ -13,7 +14,7 @@ async function page({ params }: Props) {
 
   const invoice = await fetchInvoice(params.invoiceId)
 
-  if(!invoice) return
+  if(!invoice) redirect('/')
 
   return (
     <div className='w-full h-max flex flex-col mb-12'>
