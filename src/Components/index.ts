@@ -6,6 +6,10 @@ export { default as NoInvoice } from './Pages/Home/NoInvoice'
 export { default as InvoiceItem } from './Pages/Home/InvoiceItem'
 export { default as Invoices } from './Pages/Home/Invoices'
 
+export { default as InvoiceButtonsHeader } from './Pages/Invoice/InvoiceButtonsHeader'
+export { default as InvoiceInfo } from './Pages/Invoice/InvoiceInfo'
+
+
 export { default as Form } from './Shared/Form'
 export { default as HandleModals } from './Shared/HandleModals'
 export { default as BillFromFields } from './Shared/Form/BillFromFields'
@@ -20,3 +24,5 @@ export { default as Input } from './Shared/Form/Input'
 export { default as Label } from './Shared/Form/Label'
 export { default as Status } from './Shared/Status'
 export { default as Overlay } from './Shared/Overlay'
+export { default as DeleteModal } from './Shared/DeleteModal'
+export { default as AuthModal } from './Shared/AuthModal'
