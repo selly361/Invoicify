@@ -3,14 +3,16 @@
 import Link from "next/link"
 import Image from "next/image"
 import { useSession } from "next-auth/react"
+import { useModalContext } from "@/Contexts"
 
 
 function UserProfile() {
 
     const { data } = useSession()
+	const { openModal } = useModalContext()
 
 	return (
-		<Link href={`/api/auth/sign${data?.user ? 'out' : 'in'}`}>
+		<button onClick={() => openModal('login')}>
 			<Image
 				src={data?.user?.image ?? '/image-placeholder.jpg'}
 				alt='image placeholder'
@@ -18,7 +20,7 @@ function UserProfile() {
 				width={40}
 				className='rounded-full'
 			/>
-		</Link>
+		</button>
 	)
 }
 
