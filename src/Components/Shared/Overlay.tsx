@@ -1,10 +1,17 @@
 'use client'
 
-import { useModalContext } from '@/Contexts'
+import { initialValues } from '@/Constants'
+import { useFormContext, useModalContext } from '@/Contexts'
 import { AnimatePresence, motion } from 'framer-motion'
 
 function Overlay() {
 	const { activeModal, closeModal } = useModalContext()
+	const { reset } = useFormContext()
+
+	const handleClick = () => {
+		closeModal()
+		reset(initialValues)
+	}
 
 	return (
 		<AnimatePresence>
@@ -13,8 +20,8 @@ function Overlay() {
 					initial={{ opacity: 0 }}
 					animate={{ opacity: 0.5 }}
 					exit={{ opacity: 0 }}
-                    onClick={closeModal}
-					className='fixed w-screen h-screen bg-black opacity-50 inset-0 z-20'
+                    onClick={handleClick}
+					className={`fixed w-screen h-screen bg-black opacity-50 inset-0 ${activeModal === 'login' ? 'z-50' : 'z-20'}`}
 				/>
 			) : null}
 		</AnimatePresence>
