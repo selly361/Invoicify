@@ -12,7 +12,7 @@ import {
 import { revalidatePath } from 'next/cache'
 import { InvoiceSchema } from '../Schemas'
 
-async function createInvoice(invoiceData: InvoiceType) {
+export async function createInvoice(invoiceData: InvoiceType) {
 	try {
 		await connectToDB()
 		const userId = await getSessionUserId()
@@ -41,7 +41,7 @@ async function createInvoice(invoiceData: InvoiceType) {
 	}
 }
 
-async function createInvoiceDraft(invoiceData: InvoiceType) {
+export async function createInvoiceDraft(invoiceData: InvoiceType) {
 	try {
 		await connectToDB()
 		const userId = await getSessionUserId()
@@ -69,7 +69,7 @@ async function createInvoiceDraft(invoiceData: InvoiceType) {
 	}
 }
 
-async function updateInvoice(newInvoice: InvoiceType) {
+export async function updateInvoice(newInvoice: InvoiceType) {
 	try {
 		if (!newInvoice._id) throw new Error('Invoice _id is required')
 
@@ -90,7 +90,7 @@ async function updateInvoice(newInvoice: InvoiceType) {
 	}
 }
 
-async function deleteInvoice(invoiceObjectId: string) {
+export async function deleteInvoice(invoiceObjectId: string) {
 	try {
 		await connectToDB()
 
@@ -111,7 +111,7 @@ async function deleteInvoice(invoiceObjectId: string) {
 	}
 }
 
-async function fetchInvoice(invoiceId: string) {
+export async function fetchInvoice(invoiceId: string) {
 	try {
 		await connectToDB()
 		const userId = await getSessionUserId()
@@ -137,7 +137,7 @@ async function fetchInvoice(invoiceId: string) {
 	}
 }
 
-async function markInvoicePaid(invoiceObjectId: string) {
+export async function markInvoicePaid(invoiceObjectId: string) {
 	try {
 		if (!invoiceObjectId) console.error('Invoice _id is required')
 
@@ -163,15 +163,4 @@ async function markInvoicePaid(invoiceObjectId: string) {
 	} catch (error) {
 		handleDBErrors(error, 'Error marking invoice as paid')
 	}
-}
-
-export const dynamic = "force-dynamic"
-
-export {
-	createInvoice,
-	fetchInvoice,
-	updateInvoice,
-	deleteInvoice,
-	markInvoicePaid,
-	createInvoiceDraft
 }
