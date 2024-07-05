@@ -1,23 +1,15 @@
 'use client'
 
 import { createContext, PropsWithChildren, useContext, useState, useEffect } from 'react'
-import { useForm, UseFormReturn } from 'react-hook-form'
+import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { InvoiceSchema } from '@/Lib/Schemas'
 import { FormValues, Invoice } from '@/Types'
 import { initialValues } from '@/Constants'
-import { createInvoiceDraft, deleteInvoice, fetchInvoice, markInvoicePaid } from '@/Lib/Actions'
+import { deleteInvoice, fetchInvoice, markInvoicePaid } from '@/Lib/Actions'
 import { useParams, useRouter } from 'next/navigation'
 import { useModalContext } from '@/Contexts'
-
-interface FormContextType extends UseFormReturn<FormValues> {
-    handleDelete: () => Promise<void>
-    handleEdit: () => Promise<void>
-    handleMarkAsPaid: () => Promise<void>
-    hasFieldError: (field: 'name' | 'quantity' | 'price' | 'total') => boolean
-    calculateTotals: () => void
-    invoiceId: string | string[]
-}
+import { FormContextType } from './FormContext.types'
 
 const FormContext = createContext<FormContextType | undefined>(undefined)
 

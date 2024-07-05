@@ -7,17 +7,7 @@ import {
 	useEffect,
 	useState
 } from 'react'
-
-interface ModalState {
-	isOpen: boolean
-	activeModal: 'delete' | 'addInvoice' | 'editInvoice' | 'login' | null
-}
-
-interface ModalContextType {
-	modalState: ModalState
-	openModal: (modal: ModalState['activeModal']) => void
-	closeModal: () => void
-}
+import { ModalContextType, ModalState } from './ModalContext.types'
 
 const ModalContext = createContext<ModalContextType | undefined>(undefined)
 
