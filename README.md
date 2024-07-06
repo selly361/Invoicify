@@ -28,14 +28,14 @@ Invoicify is a robust invoicing application designed to help users create, manag
 ### Home Page (No Invoices, User Not Signed In)
 ![Default Page](./public/preview/default-page.png)
 
+### Sign In Modal
+![Sign In Modal](./public/preview/sign-in-modal.png)
+
+### User Signed In
+![User Signed In](./public/preview/signed-in.png)
+
 ### Add Invoice Modal
 ![Add Invoice Modal](./public/preview/add-invoice-modal.png)
-
-### Delete Invoice Modal
-![Delete Invoice Modal](./public/preview/delete-invoice-modal.png)
-
-### Draft Invoice
-![Draft Invoice](./public/preview/draft-invoice.png)
 
 ### Invoice Input Error
 ![Invoice Input Error](./public/preview/invoice-input-error.png)
@@ -43,18 +43,17 @@ Invoicify is a robust invoicing application designed to help users create, manag
 ### Invoice Items
 ![Invoice Items](./public/preview/invoice-items.png)
 
-### Paid Invoice
-![Paid Invoice](./public/preview/paid-invoice.png)
+### Draft Invoice
+![Draft Invoice](./public/preview/draft-invoice.png)
 
 ### Pending Invoice
 ![Pending Invoice](./public/preview/pending-invoice.png)
 
-### Sign In Modal
-![Sign In Modal](./public/preview/sign-in-modal.png)
+### Paid Invoice
+![Paid Invoice](./public/preview/paid-invoice.png)
+
+### Delete Invoice Modal
+![Delete Invoice Modal](./public/preview/delete-invoice-modal.png)
 
 ### Sign Out Modal
 ![Sign Out Modal](./public/preview/sign-out-modal.png)
-
-### User Signed In
-![User Signed In](./public/preview/signed-in.png)
-
