@@ -1,5 +1,14 @@
 import { InvoiceHeader, Invoices, NoInvoice } from '@/Components'
 import { fetchUserInvoices } from '@/Lib/Actions'
+import { Metadata } from 'next'
+
+export async function generateMetadata(): Promise<Metadata> {
+	const length = (await fetchUserInvoices())?.length ?? 0
+	const title =
+		length === 0 ? 'No Invoices' : `${length} Invoice${length > 1 ? 's' : ''}`
+
+	return { title }
+}
 
 async function Home() {
 	const invoicesData = await fetchUserInvoices()
