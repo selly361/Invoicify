@@ -3,6 +3,13 @@ import '../globals.css'
 import { PropsWithChildren } from 'react'
 import { HandleModals, Header, Overlay, SessionProvider } from '@/Components'
 import { FormProvider, ModalContextProvider } from '@/Contexts'
+import { Metadata } from 'next'
+
+export const metadata: Metadata = {
+	title: 'Invoicify',
+	description: 'Manage and view all your invoices in one place with Invoicify.'
+}
+
 
 const leagueSpartan = League_Spartan({ subsets: ['latin'] })
 
