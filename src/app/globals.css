@@ -170,6 +170,14 @@
 	.dropdown-option:last-child {
 		@apply border-none;
 	}
+
+	.invoice-item-id {
+		@apply text-textPrimary text-heading-s-variant
+	}
+
+	.invoice-item-id span {
+		@apply text-blueGrayish
+	}
 }
 
 /* Scrollbar styles */
