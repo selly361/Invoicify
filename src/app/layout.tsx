@@ -8,10 +8,10 @@ export default function RootLayout({ children }: Readonly<PropsWithChildren>) {
 	return (
 		<html lang='en' className='dark'>
 			<body
-				className={`${leagueSpartan.className} bg-bgMain min-h-screen flex justify-center pt-16`}
+				className={`${leagueSpartan.className} bg-bgMain min-h-screen flex justify-center pt-16 max-md:pt-36 max-md:px-12`}
 			>
 					{children}
 			</body>
 		</html>
 	)
-}
+} 
